@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="container1" style="float: left; width: 50%;"></div>
+<div id="container2" style="float: left; width: 50%;"></div>
+
+<script src="{% static 'js/highcharts.js' %}"></script>
+    <script src="{% static 'js/highcharts-more.js' %}"></script>
+<!-- 还可以在这里添加其他Highcharts库引用 -->
+
+<script>
+// dashboard1
+Highcharts.chart('container1', {
+    chart: {
+        type: 'gauge'
+    },
+    title: {
+        text: 'Methane'
+    },
+     pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+    yAxis: {
+        min: 0,
+        max: 100,
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'Concentration'
+        },
+        plotBands: [{
+            from: 0,
+            to: 50,
+            color: '#55BF3B' // 绿色
+        }, {
+            from: 50,
+            to: 80,
+            color: '#DDDF0D' // 黄色
+        }, {
+            from: 80,
+            to: 100,
+            color: '#DF5353' // 红色
+        }]
+    },
+    series: [{
+        name: 'Concentration',
+        data: [0],
+        tooltip: {
+            valueSuffix: '%'
+        }
+    }]
+});
+
+// dashboard2
+Highcharts.chart('container2', {
+    chart: {
+        type: 'gauge'
+    },
+    title: {
+        text: 'Formaldehyde'
+    },
+     pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+    yAxis: {
+        min: 0,
+        max: 100,
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'Concentration'
+        },
+        plotBands: [{
+            from: 0,
+            to: 50,
+            color: '#55BF3B' // 绿色
+        }, {
+            from: 50,
+            to: 80,
+            color: '#DDDF0D' // 黄色
+        }, {
+            from: 80,
+            to: 100,
+            color: '#DF5353' // 红色
+        }]
+    },
+    series: [{
+        name: 'Concentration',
+        data: [0],
+        tooltip: {
+            valueSuffix: '%'
+        }
+    }]
+    ,
+});
+
+function updateConcentration(){
+    $.ajax({
+        url:"/home/dashboard/",
+        type:'GET',
+        dataType:'json',
+        success:function(data){
+            var chart1=Highcharts.charts[0];
+            var chart2=Highcharts.charts[1];
+            chart1.series[0].setData([data.methane_concentration], true);
+            chart2.series[0].setData([data.formaldehyde_concentration], true);
+        }
+    });
+}
+setInterval(updateConcentration, 3000);  // update the data every 3 seconds
+
+
+</script>
+{% endblock %}
