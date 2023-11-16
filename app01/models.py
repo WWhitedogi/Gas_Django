@@ -14,7 +14,18 @@ class UserInfo(models.Model):
     age=models.IntegerField
 
 class Measurement(models.Model):
-    methane_concentration = models.FloatField()  # Methane concentration, stored as a FloatField
-    formaldehyde_concentration = models.FloatField()  # Formaldehyde concentration, stored as a FloatField
+    id = models.AutoField(primary_key=True)
+    time = models.CharField(max_length=18)
+    methane_ppm = models.FloatField()  # Methane concentration, stored as a FloatField
+    formaldehyde_ppm = models.FloatField()  # Formaldehyde concentration, stored as a FloatField
     temperature = models.FloatField()  # Temperature, stored as a FloatField
-    humidity = models.FloatField()  # Humidity, stored as a FloatField
+    # humidity = models.FloatField()  # Humidity, stored as a FloatField
+
+# class Sensorread(models.Model):
+#     time = models.CharField(max_length=18, primary_key=True)
+#     mvol = models.FloatField()  # Methane concentration, stored as a FloatField
+#     mppm = models.FloatField()  # Methane concentration, stored as a FloatField
+#     fvol = models.FloatField()  # Methane concentration, stored as a FloatField
+#     fppm = models.FloatField()  # Formaldehyde concentration, stored asxs a FloatField
+#     temp = models.IntegerField()  # Temperature, stored as a FloatField
+#     humd = models.IntegerField()  # Humidity, stored as a FloatField
